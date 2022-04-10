@@ -1,22 +1,24 @@
 import Block from "../block";
 import { useEditorStore } from "../state";
+import Toolbar from "../toolbar";
 
 export default function List() {
-  const store = useEditorStore();
+  const components = useEditorStore(state => state.components);
+  const { title, setTitle } = useEditorStore(state => ({ title: state.title, setTitle: state.setTitle }));
 
   return (
-    <div className="list w-9/12 p-4">
-      <input type="text" name="title" id="title" placeholder="Title" className="mb-4 border-2 p-4 text-2xl w-full" />
+    <div className="list w-9/12">
+      <Toolbar />
 
-      {store.components.map((component, index) => (
-        <Block id={index} key={index}>
-          <component.component {...component.props} />
-        </Block>
-      ))}
+      <div className="p-4">
+        <input type="text" value={title || ""} onChange={(event) => setTitle(event.target.value)} name="title" placeholder="Title" className="mb-4 border-2 p-3 rounded text-xl w-full" />
 
-      <button onClick={() => store.add("banner")} type="button">
-        Add
-      </button>
+        {components.map((component, index) => (
+          <Block id={index} key={index}>
+            <component.component {...component.props} />
+          </Block>
+        ))}
+      </div>
     </div>
   )
 }

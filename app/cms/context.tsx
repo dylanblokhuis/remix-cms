@@ -15,6 +15,7 @@ export const useComponents: () => Required<Component[]> = () => {
   if (!context) throw new Error("useComponents hook used outside CompontentsContext");
 
   const componentsWithData = context.components.map((component, index) => {
+    if (component.props) return component;
     const props = context.data[index].props;
     component.props = props;
     Object.entries(props).forEach(([key, value]) => {

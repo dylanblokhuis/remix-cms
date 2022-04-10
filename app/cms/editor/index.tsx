@@ -1,12 +1,14 @@
-import { Form } from "@remix-run/react";
 import List from "./list";
 import Sidebar from "./sidebar";
+import { SSRProvider } from '@react-aria/ssr'
 
 export default function Editor() {
   return (
-    <Form method="post" className="mx-auto flex h-full">
-      <List />
-      <Sidebar />
-    </Form>
+    <SSRProvider>
+      <div className="mx-auto flex h-full">
+        <List />
+        <Sidebar />
+      </div>
+    </SSRProvider>
   )
 }
