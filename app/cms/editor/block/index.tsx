@@ -1,5 +1,6 @@
 import React from 'react'
 import { useEditorStore } from '../state'
+import clsx from "clsx"
 
 interface BlockProps {
   id: number
@@ -7,6 +8,7 @@ interface BlockProps {
 }
 export default function Block({ id, children }: BlockProps) {
   const setFocus = useEditorStore(state => state.setFocus);
+  const focus = useEditorStore(state => state.focus);
   function handleClick(event: React.MouseEvent<HTMLDivElement>) {
     event.preventDefault()
     event.stopPropagation()
@@ -19,7 +21,12 @@ export default function Block({ id, children }: BlockProps) {
     // setFocus(id)
   }
 
+  const className = clsx(
+    "_block mb-4",
+    focus === id && "is-focused"
+  )
+
   return (
-    <div tabIndex={0} onClick={handleClick} onFocus={handleFocus} className='block' role="button">{children}</div>
+    <div tabIndex={0} onClick={handleClick} onFocus={handleFocus} className={className} role="button">{children}</div>
   )
 }

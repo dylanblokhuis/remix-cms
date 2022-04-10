@@ -6,6 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useMatches,
 } from "@remix-run/react";
 import styles from "./styles/app.css"
 
@@ -36,6 +37,8 @@ export const loader: LoaderFunction = async () => {
 
 export default function App() {
   const data = useLoaderData();
+  const matches = useMatches();
+  const bodyClasses = matches.filter(it => it.handle?.className).map(it => it.handle.className).join(" ");
 
   return (
     <html lang="en">
@@ -43,7 +46,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className={bodyClasses}>
         <ComponentsContext.Provider
           value={{
             components: components,

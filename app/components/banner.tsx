@@ -1,4 +1,4 @@
-import { type Schema } from '@cms/lib'
+import { type Schema } from '~/cms'
 
 export const schema: Schema = {
   name: "banner",
@@ -18,11 +18,8 @@ export const schema: Schema = {
 
 export default function Banner(props: any) {
   return (
-    <div>
-
-      banner: {JSON.stringify(props)}
-
-      <h1>{props.title}</h1>
+    <div className='p-4 bg-gray-500 text-white'>
+      <h1 className='text-xl'>{props.title}</h1>
     </div>
   )
 }

@@ -2,10 +2,11 @@ import React from "react"
 
 type FieldType = "text" | "textarea"
 
-interface Field {
+export interface Field {
   name: string
   slug: string
   type: FieldType
+  data?: any
 }
 
 export interface Schema {

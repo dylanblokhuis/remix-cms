@@ -17,6 +17,11 @@ export const useComponents: () => Required<Component[]> = () => {
   const componentsWithData = context.components.map((component, index) => {
     const props = context.data[index].props;
     component.props = props;
+    Object.entries(props).forEach(([key, value]) => {
+      const index = component.schema.fields.findIndex(field => field.slug === key);
+      component.schema.fields[index].data = value;
+    });
+
     return component;
   });
 
