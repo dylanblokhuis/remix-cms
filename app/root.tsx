@@ -10,7 +10,7 @@ import {
 } from "@remix-run/react";
 
 import * as banner from "./components/banner"
-import { registerComponents, ComponentsContext } from "@cms/lib";
+import { registerComponents, ComponentsContext } from "~/cms";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",

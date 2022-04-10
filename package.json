@@ -8,7 +8,7 @@
   "scripts": {
     "build": "remix build",
     "dev": "remix build && run-p dev:*",
-    "dev:node": "cross-env NODE_ENV=development nodemon ./server.js --watch ./server.js --watch ../cms/dist/lib.esm.js",
+    "dev:node": "cross-env NODE_ENV=development nodemon ./server.js --watch ./server.js",
     "dev:remix": "remix watch",
     "start": "cross-env NODE_ENV=production node ./server.js"
   },

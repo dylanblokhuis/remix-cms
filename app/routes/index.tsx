@@ -1,4 +1,4 @@
-import { useComponents } from "@cms/lib";
+import { useComponents } from "~/cms";
 
 export default function Index() {
   const components = useComponents();
