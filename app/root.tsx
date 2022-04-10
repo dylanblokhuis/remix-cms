@@ -11,7 +11,6 @@ import {
 import styles from "./styles/app.css"
 
 import * as banner from "./components/banner"
-import { registerComponents, ComponentsContext } from "~/cms";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -23,20 +22,20 @@ export function links() {
   return [{ rel: "stylesheet", href: styles }]
 }
 
-const components = [
+export const library = [
   {
     schema: banner.schema,
     component: banner.default
   }
 ];
 
-export const loader: LoaderFunction = async () => {
-  const data = await registerComponents(components);
-  return data;
-}
+// export const loader: LoaderFunction = async () => {
+//   const data = await registerComponents(components);
+//   return data;
+// }
 
 export default function App() {
-  const data = useLoaderData();
+  // const data = useLoaderData();
   const matches = useMatches();
   const bodyClasses = matches.filter(it => it.handle?.className).map(it => it.handle.className).join(" ");
 
@@ -47,14 +46,14 @@ export default function App() {
         <Links />
       </head>
       <body className={bodyClasses}>
-        <ComponentsContext.Provider
+        {/* <ComponentsContext.Provider
           value={{
             components: components,
             data: data
           }}
-        >
-          <Outlet />
-        </ComponentsContext.Provider>
+        > */}
+        <Outlet />
+        {/* </ComponentsContext.Provider> */}
 
         <ScrollRestoration />
         <Scripts />

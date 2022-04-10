@@ -1,30 +1,26 @@
 import { createContext, useContext } from "react";
+import { library } from "~/root";
 import { Component } from "./index";
 
 interface ContextProps {
   components: Component[],
-  data: Component[]
 }
 export const ComponentsContext = createContext<ContextProps>({
   components: [],
-  data: []
 });
 
-export const useComponents: () => Required<Component[]> = () => {
+export function useComponents(data?: string): Required<Component[]> {
   const context = useContext(ComponentsContext);
   if (!context) throw new Error("useComponents hook used outside CompontentsContext");
+  if (!data) return [];
 
-  const componentsWithData = context.components.map((component, index) => {
-    if (component.props) return component;
-    const props = context.data[index].props;
-    component.props = props;
-    Object.entries(props).forEach(([key, value]) => {
-      const index = component.schema.fields.findIndex(field => field.slug === key);
-      component.schema.fields[index].data = value;
-    });
+  const dataComponents = JSON.parse(data) as Component[];
+  const components = dataComponents.map(dataComponent => {
+    const component = library.find(it => it.schema.name === dataComponent.schema.name);
+    if (!component) throw new Error("Tried to load in component from data that doesn't exist in the library");
+    dataComponent.component = component.component;
+    return dataComponent;
+  })
 
-    return component;
-  });
-
-  return componentsWithData
+  return components
 }

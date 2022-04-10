@@ -11,6 +11,6 @@ export default function Text({ slug, data }: FieldProps) {
   }
 
   return (
-    <input onChange={handleChange} name={slug} value={data} className="border p-1" type="text" />
+    <input onChange={handleChange} name={slug} value={data || ""} className="border p-1" type="text" />
   )
 }

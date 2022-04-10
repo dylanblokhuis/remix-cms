@@ -10,7 +10,8 @@ export const useEditorStore = useStore;
 
 interface Init {
   library: Component[]
-  title: string
+  title?: string
+  components: Component[]
 }
 
 interface InitStore extends Init {
@@ -23,7 +24,7 @@ interface Store {
   library: Component[]
   components: Component[]
   focus: number | undefined
-  add: (name: string) => void
+  add: (name: string, props: any) => void
   setFocus: (index: number) => void
   edit: (index: number, slug: string, value: any) => void
   title: string | undefined
@@ -51,7 +52,7 @@ const store = (init: InitStore) => create<Store>(immer((set, get) => ({
   fetcher: init.fetcher,
 
   library: init.library,
-  components: [],
+  components: init.components,
   focus: undefined,
   add: (name) => set(state => {
     const component = state.library.find(it => it.schema.name === name);
@@ -63,6 +64,7 @@ const store = (init: InitStore) => create<Store>(immer((set, get) => ({
   }),
   edit: (index: number, slug: string, value) => set((state) => {
     const component = state.components[index];
+    if (!component.props) component.props = {};
     component.props[slug] = value;
     Object.entries(component.props).forEach(([key, value]) => {
       const index = component.schema.fields.findIndex(field => field.slug === key);
@@ -70,40 +72,31 @@ const store = (init: InitStore) => create<Store>(immer((set, get) => ({
     });
   }),
 
-  title: undefined,
+  title: init.title,
   setTitle: (title: string) => set((state) => {
     state.title = title;
   }),
   save: async () => {
     const fetcher = get().fetcher;
 
-    console.log(fetcher);
-
     fetcher?.submit({
       title: get().title || "",
       components: JSON.stringify(get().components)
     }, {
       method: "post",
-      action: window.location.pathname
+      action: window.location.pathname + window.location.search
     });
-
-    // const res = await fetch(window.location.pathname, {
-    //   method: "POST",
-    //   body: JSON.stringify(get().components)
-    // });
-    // await res.json();
-    console.log("save");
   }
 })));
 
 interface EditorProviderProps extends Init {
   children: React.ReactNode
 }
-export function EditorProvider({ children, library, title }: EditorProviderProps) {
+export function EditorProvider({ children, library, title, components }: EditorProviderProps) {
   const fetcher = useFetcher();
 
   return (
-    <Provider createStore={() => store({ library, title, fetcher })}>
+    <Provider createStore={() => store({ library, title, fetcher, components })}>
       {children}
     </Provider>
   )

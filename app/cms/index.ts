@@ -20,22 +20,4 @@ export interface Component {
   props?: any
 }
 
-export async function registerComponents(components: Component[]): Promise<Component[]> {
-  global.cms = {
-    components
-  }
-
-  const componentsWithData = components.map(component => {
-
-    component.props = {
-      "title": "fgdgdfg",
-      "subtitle": "yooooooo"
-    };
-
-    return component;
-  });
-
-  return componentsWithData;
-}
-
 export { useComponents, ComponentsContext } from "./context"
