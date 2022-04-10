@@ -1,14 +1,24 @@
 import { LoaderFunction } from "@remix-run/node"
-import { useMatches } from "@remix-run/react";
+import { useComponents } from "~/cms";
+import Editor from "~/cms/editor";
+import { EditorProvider } from "~/cms/editor/state";
 
 export const loader: LoaderFunction = () => {
-  const components = global.cms;
+  // const components = global.cms;
+
+  // console.log(components);
+
 
   return true;
 }
 
-export default function create() {
+
+export default function Create() {
+  const components = useComponents();
+
   return (
-    <div>create</div>
+    <EditorProvider library={components}>
+      <Editor />
+    </EditorProvider>
   )
 }
