@@ -14,8 +14,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
 export default function Index() {
   const post = useLoaderData<LoaderData>();
-  const data = JSON.parse(post?.data?.toString() || "[]");
-  const components = useComponents(data);
+  const components = useComponents(post?.data);
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>

@@ -31,8 +31,8 @@ const BlockLibraryPopover = forwardRef<HTMLDivElement, BlockLibraryPopoverProps>
   // Get props for the dialog and its title
   const { dialogProps, titleProps } = useDialog({}, ref as React.RefObject<HTMLDivElement>)
 
-  async function handleClick(name: string) {
-    await add(name)
+  function handleClick(name: string) {
+    add(name)
     onClose()
   }
 
@@ -62,5 +62,7 @@ const BlockLibraryPopover = forwardRef<HTMLDivElement, BlockLibraryPopoverProps>
     </FocusScope>
   )
 })
+
+BlockLibraryPopover.displayName = "BlockLibraryPopover"
 
 export default BlockLibraryPopover

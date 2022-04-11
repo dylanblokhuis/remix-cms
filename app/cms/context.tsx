@@ -1,8 +1,7 @@
-import { lazy, useEffect, useState } from "react";
-import { useMemo } from "react";
+import { lazy } from "react";
 import { createContext, useContext } from "react";
 import { library } from "~/root";
-import { Component, DataComponent, LibraryComponent } from "./index";
+import { Component, DataComponent } from "./index";
 
 interface ContextProps {
   components: Component[],

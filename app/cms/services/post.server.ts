@@ -1,7 +1,12 @@
-import type { Post } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
+import { DataComponent } from "..";
 import { db } from "./db.server";
 
-export type PostModel = Post
+export type PostModel = {
+  title: string
+  data: DataComponent[],
+  pathname: string
+}
 
 interface PostCreate {
   title: string,
@@ -33,20 +38,39 @@ function update(id: string, data: PostUpdate) {
   });
 }
 
-function get(id: string) {
-  return db.post.findUnique({
+async function get(id: string): Promise<PostModel | null> {
+  const post = await db.post.findUnique({
     where: {
       id,
     },
   });
+
+  if (!post) return null;
+
+  return {
+    ...post,
+    data: parseData(post.data)
+  }
 }
 
-function getByPathname(pathname: string) {
-  return db.post.findFirst({
+async function getByPathname(pathname: string): Promise<PostModel | null> {
+  const post = await db.post.findFirst({
     where: {
       pathname,
     },
   });
+
+  if (!post) return null;
+
+  return {
+    ...post,
+    data: parseData(post.data)
+  }
+}
+
+function parseData(data: Prisma.JsonValue): DataComponent[] {
+  if (!data?.toString()) throw new Error("Prisma returned null data");
+  return JSON.parse(data.toString())
 }
 
 const postService = {

@@ -1,11 +1,8 @@
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
 import { useLoaderData } from "@remix-run/react";
-import { useEffect } from "react";
-import { useComponents } from "~/cms";
 import Editor from "~/cms/editor";
 import { EditorProvider } from "~/cms/editor/state";
 import postService, { PostModel } from "~/cms/services/post.server";
-import { library } from "~/root";
 
 export const handle = {
   className: "admin"
@@ -52,7 +49,7 @@ export default function Create() {
   const post = useLoaderData<LoaderType>();
 
   return (
-    <EditorProvider title={post?.title} data={JSON.parse(post?.data?.toString() || "[]")}>
+    <EditorProvider title={post?.title} data={post?.data || []}>
       <Editor />
     </EditorProvider>
   )

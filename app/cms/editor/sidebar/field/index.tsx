@@ -1,7 +1,7 @@
-import { Field } from '~/cms'
+import { Field as FieldType } from '~/cms'
 import Text from './text'
 
-export interface FieldProps extends Field {
+export interface FieldProps extends FieldType {
 }
 export default function Field(props: FieldProps) {
   switch (props.type) {
