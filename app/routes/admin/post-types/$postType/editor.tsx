@@ -4,10 +4,6 @@ import Editor from "~/cms/editor";
 import { EditorProvider } from "~/cms/editor/state";
 import postService, { PostModel } from "~/cms/services/post.server";
 
-export const handle = {
-  className: "admin"
-}
-
 export type LoaderType = PostModel | null
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);

@@ -10,12 +10,43 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  posts     Post[]
+}
+
 model Post {
-  id       String @id @default(cuid())
-  title    String
-  data     Json
-  pathname String
+  id         String     @id @default(cuid())
+  title      String
+  data       Json
+  pathname   String
+  status     PostStatus
+  postType   PostType   @relation(fields: [postTypeId], references: [id])
+  postTypeId String
+  author     User       @relation(fields: [userId], references: [id])
+  userId     String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum PostStatus {
+  PUBLISHED
+  DRAFT
+  TRASHED
+}
+
+model PostType {
+  id        String   @id @default(cuid())
+  singular  String
+  plural    String
+  pathname  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  posts     Post[]
 }

@@ -32,7 +32,6 @@ export interface Component {
   props: any
 }
 
-
 export type Library = {
   name: string
   module: () => Promise<{ default: React.ComponentType<any>, schema: Schema }>

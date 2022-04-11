@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,5 +14,49 @@
   .is-focused>* {
     box-shadow: 0 0 0 2px rgb(163, 199, 223);
     @apply rounded;
+  }
+
+  h1 {
+    @apply text-4xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl font-bold;
+  }
+
+  h3 {
+    @apply text-2xl font-bold;
+  }
+
+  h4 {
+    @apply text-xl font-bold;
+  }
+
+  h5 {
+    @apply text-lg font-bold;
+  }
+
+  h6 {
+    @apply text-base font-bold;
+  }
+
+  table {
+    @apply min-w-full divide-y divide-gray-200;
+  }
+
+  table thead {
+    @apply bg-gray-100;
+  }
+
+  table th {
+    @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+  }
+
+  table tbody {
+    @apply bg-white divide-y divide-gray-200;
+  }
+
+  table td {
+    @apply px-6 py-4 whitespace-nowrap text-sm;
   }
 }
