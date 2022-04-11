@@ -3,11 +3,11 @@ import Field from "./field"
 
 export default function Sidebar() {
   const focus = useEditorStore(store => store.focus);
-  const components = useEditorStore(store => store.components);
+  const data = useEditorStore(store => store.data);
 
   if (focus === undefined) return null;
 
-  const component = components[focus];
+  const component = data[focus];
   const fields = component.schema.fields
 
   return (

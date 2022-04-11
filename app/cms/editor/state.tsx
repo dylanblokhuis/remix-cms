@@ -1,17 +1,17 @@
 import create, { GetState, SetState, State, StateCreator, StoreApi } from "zustand";
 import createContext from "zustand/context";
-import { Component } from "..";
+import { Component, DataComponent } from "..";
 import produce, { Draft } from 'immer'
 import { useFetcher } from "@remix-run/react";
+import { library } from "~/root";
 type FetcherWithComponents = ReturnType<typeof useFetcher>
 
 const { Provider, useStore } = createContext<Store>();
 export const useEditorStore = useStore;
 
 interface Init {
-  library: Component[]
   title?: string
-  components: Component[]
+  data: DataComponent[]
 }
 
 interface InitStore extends Init {
@@ -21,10 +21,9 @@ interface InitStore extends Init {
 interface Store {
   fetcher: FetcherWithComponents | undefined,
 
-  library: Component[]
-  components: Component[]
+  data: DataComponent[]
   focus: number | undefined
-  add: (name: string, props: any) => void
+  add: (name: string, props?: any) => void
   setFocus: (index: number) => void
   edit: (index: number, slug: string, value: any) => void
   title: string | undefined
@@ -51,19 +50,21 @@ const immer =
 const store = (init: InitStore) => create<Store>(immer((set, get) => ({
   fetcher: init.fetcher,
 
-  library: init.library,
-  components: init.components,
+  data: init.data,
   focus: undefined,
   add: (name) => set(state => {
-    const component = state.library.find(it => it.schema.name === name);
+    const component = library.find(it => it.schema.name === name);
     if (!component) throw new Error("Tried to add component that doesn't exist");
-    state.components.push(component)
+    state.data.push({
+      schema: component.schema,
+      props: {}
+    })
   }),
   setFocus: (index: number) => set((state) => {
     state.focus = index;
   }),
   edit: (index: number, slug: string, value) => set((state) => {
-    const component = state.components[index];
+    const component = state.data[index];
     if (!component.props) component.props = {};
     component.props[slug] = value;
     Object.entries(component.props).forEach(([key, value]) => {
@@ -81,7 +82,7 @@ const store = (init: InitStore) => create<Store>(immer((set, get) => ({
 
     fetcher?.submit({
       title: get().title || "",
-      components: JSON.stringify(get().components)
+      data: JSON.stringify(get().data)
     }, {
       method: "post",
       action: window.location.pathname + window.location.search
@@ -92,11 +93,11 @@ const store = (init: InitStore) => create<Store>(immer((set, get) => ({
 interface EditorProviderProps extends Init {
   children: React.ReactNode
 }
-export function EditorProvider({ children, library, title, components }: EditorProviderProps) {
+export function EditorProvider({ children, title, data }: EditorProviderProps) {
   const fetcher = useFetcher();
 
   return (
-    <Provider createStore={() => store({ library, title, fetcher, components })}>
+    <Provider createStore={() => store({ title, fetcher, data })}>
       {children}
     </Provider>
   )

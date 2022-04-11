@@ -3,23 +3,32 @@ import { db } from "./db.server";
 
 export type PostModel = Post
 
-function create(title: string, components: string) {
+interface PostCreate {
+  title: string,
+  data: string,
+  pathname: string
+}
+type PostUpdate = Partial<PostCreate>
+
+function create(data: PostCreate) {
   return db.post.create({
     data: {
-      title,
-      data: components,
+      title: data.title,
+      data: data.data,
+      pathname: data.pathname
     },
   });
 }
 
-function update(id: string, title: string, components: string) {
+function update(id: string, data: PostUpdate) {
   return db.post.update({
     where: {
       id: id
     },
     data: {
-      title,
-      data: components,
+      title: data.title,
+      data: data.data,
+      pathname: data.pathname
     },
   });
 }
@@ -32,9 +41,18 @@ function get(id: string) {
   });
 }
 
+function getByPathname(pathname: string) {
+  return db.post.findFirst({
+    where: {
+      pathname,
+    },
+  });
+}
+
 const postService = {
   create,
   update,
   get,
+  getByPathname
 }
 export default postService

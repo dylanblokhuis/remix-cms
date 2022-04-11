@@ -1,4 +1,4 @@
-import React from "react"
+import { LazyExoticComponent } from "react"
 
 type FieldType = "text" | "textarea"
 
@@ -14,10 +14,20 @@ export interface Schema {
   fields: Field[]
 }
 
+export interface LibraryComponent {
+  schema: Schema,
+  component: LazyExoticComponent<any>
+}
+
+export interface DataComponent {
+  schema: Schema,
+  props: any
+}
+
 export interface Component {
   schema: Schema,
-  component: React.FunctionComponent
-  props?: any
+  component: LazyExoticComponent<any>
+  props: any
 }
 
 export { useComponents, ComponentsContext } from "./context"

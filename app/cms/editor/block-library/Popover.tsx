@@ -4,6 +4,7 @@ import { useDialog } from '@react-aria/dialog'
 import { FocusScope } from '@react-aria/focus'
 import { mergeProps } from '@react-aria/utils'
 import { useEditorStore } from '../state'
+import { library } from '~/root'
 
 interface BlockLibraryPopoverProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean
@@ -11,7 +12,6 @@ interface BlockLibraryPopoverProps extends React.HTMLAttributes<HTMLDivElement> 
 }
 
 const BlockLibraryPopover = forwardRef<HTMLDivElement, BlockLibraryPopoverProps>(({ isOpen, onClose, ...otherProps }, ref) => {
-  const library = useEditorStore((state) => state.library)
   const add = useEditorStore((state) => state.add)
 
   // Handle interacting outside the dialog and pressing
