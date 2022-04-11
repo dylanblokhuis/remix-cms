@@ -1,7 +1,6 @@
 import { type Schema } from '~/cms'
 
 export const schema: Schema = {
-  name: "banner",
   fields: [
     {
       name: "Title",

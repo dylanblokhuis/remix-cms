@@ -9,9 +9,6 @@ import {
 } from "@remix-run/react";
 import styles from "./styles/app.css"
 
-import { schema as bannerSchema } from "~/components/banner"
-import { lazy } from "react";
-
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
   title: "CMS",
@@ -24,8 +21,8 @@ export function links() {
 
 export const library = [
   {
-    schema: bannerSchema,
-    component: lazy(() => import("~/components/banner"))
+    name: "banner",
+    module: () => import("~/components/banner")
   }
 ];
 

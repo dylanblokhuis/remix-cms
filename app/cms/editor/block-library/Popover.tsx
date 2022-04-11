@@ -31,8 +31,8 @@ const BlockLibraryPopover = forwardRef<HTMLDivElement, BlockLibraryPopoverProps>
   // Get props for the dialog and its title
   const { dialogProps, titleProps } = useDialog({}, ref as React.RefObject<HTMLDivElement>)
 
-  function handleClick(name: string) {
-    add(name)
+  async function handleClick(name: string) {
+    await add(name)
     onClose()
   }
 
@@ -51,8 +51,8 @@ const BlockLibraryPopover = forwardRef<HTMLDivElement, BlockLibraryPopoverProps>
 
         <div className="grid grid-cols-3 min-w-[350px] gap-5">
           {library.map((item) => (
-            <button className="py-5 bg-gray-100 hover:bg-gray-200 rounded" key={item.schema.name} onClick={() => handleClick(item.schema.name)}>
-              {item.schema.name}
+            <button className="py-5 bg-gray-100 hover:bg-gray-200 rounded" key={item.name} onClick={() => handleClick(item.name)}>
+              {item.name}
             </button>
           ))}
         </div>

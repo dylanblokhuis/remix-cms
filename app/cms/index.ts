@@ -10,21 +10,23 @@ export interface Field {
 }
 
 export interface Schema {
-  name: string
   fields: Field[]
 }
 
 export interface LibraryComponent {
+  name: string
   schema: Schema,
   component: LazyExoticComponent<any>
 }
 
 export interface DataComponent {
+  name: string
   schema: Schema,
   props: any
 }
 
 export interface Component {
+  name: string
   schema: Schema,
   component: LazyExoticComponent<any>
   props: any

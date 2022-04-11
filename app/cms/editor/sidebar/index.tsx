@@ -12,7 +12,7 @@ export default function Sidebar() {
 
   return (
     <aside className="w-3/12 border-l p-4">
-      <strong className="mb-4 block">{component.schema.name}</strong>
+      <strong className="mb-4 block">{component.name}</strong>
 
       {fields.map((field) => (
         <div className="flex flex-col mb-4" key={`${focus}_${field.slug}`}>

@@ -1,6 +1,6 @@
 import create, { GetState, SetState, State, StateCreator, StoreApi } from "zustand";
 import createContext from "zustand/context";
-import { Component, DataComponent } from "..";
+import { DataComponent } from "..";
 import produce, { Draft } from 'immer'
 import { useFetcher } from "@remix-run/react";
 import { library } from "~/root";
@@ -52,14 +52,20 @@ const store = (init: InitStore) => create<Store>(immer((set, get) => ({
 
   data: init.data,
   focus: undefined,
-  add: (name) => set(state => {
-    const component = library.find(it => it.schema.name === name);
+  add: async (name) => {
+    const component = library.find(it => it.name === name);
     if (!component) throw new Error("Tried to add component that doesn't exist");
-    state.data.push({
-      schema: component.schema,
-      props: {}
+
+    const module = await component.module();
+
+    set(state => {
+      state.data.push({
+        name: name,
+        schema: module.schema,
+        props: {}
+      })
     })
-  }),
+  },
   setFocus: (index: number) => set((state) => {
     state.focus = index;
   }),
