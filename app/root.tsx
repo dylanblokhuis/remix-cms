@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
   useMatches,
 } from "@remix-run/react";
+import { Library } from "./cms";
 import styles from "./styles/app.css"
 
 export const meta: MetaFunction = () => ({
@@ -19,13 +20,12 @@ export function links() {
   return [{ rel: "stylesheet", href: styles }]
 }
 
-export const library = [
+export const library: Library = [
   {
     name: "banner",
     module: () => import("~/components/banner")
   }
 ];
-
 
 export default function App() {
   const matches = useMatches();

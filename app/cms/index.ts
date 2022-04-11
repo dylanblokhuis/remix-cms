@@ -1,4 +1,4 @@
-import { LazyExoticComponent } from "react"
+import React, { LazyExoticComponent } from "react"
 
 type FieldType = "text" | "textarea"
 
@@ -31,5 +31,11 @@ export interface Component {
   component: LazyExoticComponent<any>
   props: any
 }
+
+
+export type Library = {
+  name: string
+  module: () => Promise<{ default: React.ComponentType<any>, schema: Schema }>
+}[]
 
 export { useComponents, ComponentsContext } from "./context"
