@@ -3,24 +3,28 @@ import { DataComponent } from "..";
 import { db } from "./db.server";
 
 export type PostModel = {
-  title: string
-  data: DataComponent[],
-  pathname: string
-}
+  title: string;
+  data: DataComponent[];
+  pathname: string;
+};
 
 interface PostCreate {
-  title: string,
-  data: string,
-  pathname: string
+  title: string;
+  data: string;
+  pathname: string;
+  postTypeId: string;
 }
-type PostUpdate = Partial<PostCreate>
+type PostUpdate = Partial<PostCreate>;
 
 function create(data: PostCreate) {
   return db.post.create({
     data: {
       title: data.title,
       data: data.data,
-      pathname: data.pathname
+      pathname: data.pathname,
+      status: "PUBLISHED",
+      postTypeId: data.postTypeId,
+      userId: "cl1vsr11z00005ms714tkcz9z",
     },
   });
 }
@@ -28,12 +32,15 @@ function create(data: PostCreate) {
 function update(id: string, data: PostUpdate) {
   return db.post.update({
     where: {
-      id: id
+      id: id,
     },
     data: {
       title: data.title,
       data: data.data,
-      pathname: data.pathname
+      pathname: data.pathname,
+      status: "PUBLISHED",
+      postTypeId: data.postTypeId,
+      userId: "cl1vsr11z00005ms714tkcz9z",
     },
   });
 }
@@ -49,8 +56,8 @@ async function get(id: string): Promise<PostModel | null> {
 
   return {
     ...post,
-    data: parseData(post.data)
-  }
+    data: parseData(post.data),
+  };
 }
 
 async function getByPathname(pathname: string): Promise<PostModel | null> {
@@ -64,19 +71,19 @@ async function getByPathname(pathname: string): Promise<PostModel | null> {
 
   return {
     ...post,
-    data: parseData(post.data)
-  }
+    data: parseData(post.data),
+  };
 }
 
 function parseData(data: Prisma.JsonValue): DataComponent[] {
   if (!data?.toString()) throw new Error("Prisma returned null data");
-  return JSON.parse(data.toString())
+  return JSON.parse(data.toString());
 }
 
 const postService = {
   create,
   update,
   get,
-  getByPathname
-}
-export default postService
+  getByPathname,
+};
+export default postService;

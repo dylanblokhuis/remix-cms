@@ -1,10 +1,10 @@
-import { ActionFunction, json, LoaderFunction } from "@remix-run/node"
+import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import Editor from "~/cms/editor";
 import { EditorProvider } from "~/cms/editor/state";
 import postService, { PostModel } from "~/cms/services/post.server";
 
-export type LoaderType = PostModel | null
+export type LoaderType = PostModel | null;
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const query = new URLSearchParams(url.search);
@@ -15,31 +15,35 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (!post) throw new Error("No post found with this id");
 
   return json<LoaderType>(post);
-}
+};
 
-export const action: ActionFunction = async ({ request }) => {
+export const action: ActionFunction = async ({ request, params }) => {
   const formData = await request.formData();
   const title = formData.get("title");
   const data = formData.get("data");
+  const { postType } = params;
 
   if (typeof title !== "string") return json("No title found");
   if (typeof data !== "string") return json("No data found");
+  if (!postType) return json("No posttype found");
 
   const url = new URL(request.url);
   const query = new URLSearchParams(url.search);
   const id = query.get("edit");
-  if (typeof id !== "string") return await postService.create({
-    title,
-    data: data,
-    pathname: "/"
-  });
+  if (typeof id !== "string")
+    return await postService.create({
+      title,
+      data: data,
+      pathname: "/",
+      postTypeId: postType,
+    });
   return await postService.update(id, {
     title,
     data: data,
-    pathname: "/"
+    pathname: "/",
+    postTypeId: postType,
   });
-}
-
+};
 
 export default function Create() {
   const post = useLoaderData<LoaderType>();
@@ -48,5 +52,5 @@ export default function Create() {
     <EditorProvider title={post?.title} data={post?.data || []}>
       <Editor />
     </EditorProvider>
-  )
+  );
 }
